@@ -1,0 +1,31 @@
+services:
+  db:
+    container_name: db
+    image: postgres:13
+    restart: always
+    hostname: postgresql
+    environment:
+      POSTGRES_DB: "mydatabase"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1234"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  grid-cloud-task1:
+    image: ${DOCKER_REGISTRY-}gridcloudtask1
+    ports:
+      - "8080:8080" 
+      - "8081:8081" 
+    build:
+      context: grid-cloud-task1
+      dockerfile: Dockerfile
+      args: 
+        BUILD_CONFIGURATION: Debug
+    depends_on:
+      - db 
+    environment:
+      DATABASE_CONNECTION_STRING: "Host=postgresql:5432; Database=mydatabase; Username=postgres; Password=1234"
+
+volumes:
+  pgdata:

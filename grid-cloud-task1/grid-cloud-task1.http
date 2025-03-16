@@ -1,0 +1,6 @@
+@grid_cloud_task1_HostAddress = http://localhost:5059
+
+GET {{grid_cloud_task1_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
